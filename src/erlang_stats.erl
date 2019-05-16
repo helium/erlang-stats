@@ -2,8 +2,8 @@
 
 -export([qbeta/3]).
 
--define(APPNAME, erlang_sss).
--define(LIBNAME, erlang_sss).
+-define(APPNAME, erlang_stats).
+-define(LIBNAME, erlang_stats).
 
 -on_load(init/0).
 
