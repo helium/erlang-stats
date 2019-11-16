@@ -32,8 +32,8 @@ endif
 
 LDFLAGS += -shared
 
-CFLAGS += -fPIC -I$(ERTS_INCLUDE_DIR) -I$(ERL_INTERFACE_INCLUDE_DIR) -Wextra
-CXXFLAGS += -std=c++14 -fPIC -I$(ERTS_INCLUDE_DIR) -I$(ERL_INTERFACE_INCLUDE_DIR) -Wextra
+CFLAGS += -fPIC -I$(ERTS_INCLUDE_DIR) -I$(ERL_INTERFACE_INCLUDE_DIR) -Wextra -Igcem/include
+CXXFLAGS += -std=c++14 -fPIC -I$(ERTS_INCLUDE_DIR) -I$(ERL_INTERFACE_INCLUDE_DIR) -Igcem/include -Wextra
 
 # Verbosity.
 
