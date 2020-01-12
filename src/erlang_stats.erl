@@ -1,6 +1,6 @@
 -module(erlang_stats).
 
--export([qbeta/3]).
+-export([qbeta/3, rchisq/1, rchisq/2]).
 
 -define(APPNAME, erlang_stats).
 -define(LIBNAME, erlang_stats).
@@ -14,6 +14,11 @@
 qbeta(_Quantile, _A, _B) ->
     not_loaded(?LINE).
 
+rchisq(_DoF) ->
+    not_loaded(?LINE).
+
+rchisq(_DoF, _Seed) ->
+    not_loaded(?LINE).
 
 %%====================================================================
 %% Internal functions

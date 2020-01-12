@@ -17,6 +17,9 @@
 #include "erl_nif.h"
 #include "stats/include/stats.hpp"
 #include <string.h>
+#include <random>
+
+static std::mt19937_64 rng;
 
 static ERL_NIF_TERM
 qbeta(ErlNifEnv * env, int argc, const ERL_NIF_TERM argv[])
@@ -32,8 +35,34 @@ qbeta(ErlNifEnv * env, int argc, const ERL_NIF_TERM argv[])
     return enif_make_double(env, result);
 }
 
+static ERL_NIF_TERM
+rchisq(ErlNifEnv * env, int argc, const ERL_NIF_TERM argv[])
+{
+    unsigned int dof;
+    if (argc >= 1 && argc < 3 && enif_get_uint(env, argv[0], &dof)) {
+        if (argc == 2) {
+            unsigned int seed;
+            if (enif_get_uint(env, argv[1], &seed)) {
+                unsigned int result = stats::rchisq(dof, seed);
+                return enif_make_uint(env, result);
+            } else {
+                return enif_make_badarg(env);
+            }
+        } else {
+            unsigned int result = stats::rchisq(dof, rng);
+            return enif_make_uint(env, result);
+        }
+    } else {
+        return enif_make_badarg(env);
+    }
+}
+
 static ErlNifFunc nif_funcs[] =
-    {{"qbeta", 3, qbeta, 0}};
+    {
+        {"qbeta", 3, qbeta, 0},
+        {"rchisq", 1, rchisq, 0},
+        {"rchisq", 2, rchisq, 0}
+    };
 
 #define ATOM(Id, Value)                                                        \
     {                                                                          \
@@ -43,6 +72,7 @@ static ErlNifFunc nif_funcs[] =
 static int
 load(ErlNifEnv * env, void ** priv_data, ERL_NIF_TERM load_info)
 {
+    rng.seed(time(0));
     (void)priv_data;
     (void)load_info;
     (void)env;
