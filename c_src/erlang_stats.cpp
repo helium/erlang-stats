@@ -57,11 +57,62 @@ rchisq(ErlNifEnv * env, int argc, const ERL_NIF_TERM argv[])
     }
 }
 
+static ERL_NIF_TERM
+rpois(ErlNifEnv * env, int argc, const ERL_NIF_TERM argv[])
+{
+    unsigned int rate;
+    if (argc >= 1 && argc < 3 && enif_get_uint(env, argv[0], &rate)) {
+        if (argc == 2) {
+            unsigned int seed;
+            if (enif_get_uint(env, argv[1], &seed)) {
+                unsigned int result = stats::rpois(rate, seed);
+                return enif_make_uint(env, result);
+            } else {
+                return enif_make_badarg(env);
+            }
+        } else {
+            unsigned int result = stats::rpois(rate, rng);
+            return enif_make_uint(env, result);
+        }
+    } else {
+        return enif_make_badarg(env);
+    }
+}
+
+static ERL_NIF_TERM
+rnorm(ErlNifEnv * env, int argc, const ERL_NIF_TERM argv[])
+{
+    int mean;
+    int variance;
+    if (argc >= 2 && argc < 4 &&
+            enif_get_int(env, argv[0], &mean) &&
+            enif_get_int(env, argv[1], &variance)) {
+        if (argc == 3) {
+            unsigned int seed;
+            if (enif_get_uint(env, argv[2], &seed)) {
+                int result = stats::rnorm(mean, variance, seed);
+                return enif_make_int(env, result);
+            } else {
+                return enif_make_badarg(env);
+            }
+        } else {
+            int result = stats::rnorm(mean, variance, rng);
+            return enif_make_int(env, result);
+        }
+    } else {
+        return enif_make_badarg(env);
+    }
+}
+
 static ErlNifFunc nif_funcs[] =
     {
         {"qbeta", 3, qbeta, 0},
         {"rchisq", 1, rchisq, 0},
-        {"rchisq", 2, rchisq, 0}
+        {"rchisq", 2, rchisq, 0},
+        {"rpois", 1, rpois, 0},
+        {"rpois", 2, rpois, 0},
+        {"rnorm", 2, rnorm, 0},
+        {"rnorm", 3, rnorm, 0}
     };
 
 #define ATOM(Id, Value)                                                        \

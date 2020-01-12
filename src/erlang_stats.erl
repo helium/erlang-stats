@@ -1,6 +1,10 @@
 -module(erlang_stats).
 
--export([qbeta/3, rchisq/1, rchisq/2]).
+-export([qbeta/3,
+         rchisq/1, rchisq/2,
+         rpois/1, rpois/2,
+         rnorm/2, rnorm/3
+        ]).
 
 -define(APPNAME, erlang_stats).
 -define(LIBNAME, erlang_stats).
@@ -18,6 +22,18 @@ rchisq(_DoF) ->
     not_loaded(?LINE).
 
 rchisq(_DoF, _Seed) ->
+    not_loaded(?LINE).
+
+rpois(_Rate) ->
+    not_loaded(?LINE).
+
+rpois(_Rate, _Seed) ->
+    not_loaded(?LINE).
+
+rnorm(_Mean, _Variance) ->
+    not_loaded(?LINE).
+
+rnorm(_Mean, _Variance, _Seed) ->
     not_loaded(?LINE).
 
 %%====================================================================
