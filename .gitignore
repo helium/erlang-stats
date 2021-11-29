@@ -18,3 +18,4 @@ _build
 rebar3.crashdump
 *~
 priv/
+c_src/stats
